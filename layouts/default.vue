@@ -49,7 +49,7 @@ export default {
     this.$store.dispatch('posts/get_posts');
   },
   computed: {
-    ...mapGetters({posts: 'posts/get_posts'})
+    ...mapGetters({posts: ['posts/get_posts']})
   },
   methods: {}
 }

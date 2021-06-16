@@ -7,13 +7,15 @@ export const state = () => ({
 export const getters = {
   get_posts: (state) => {
     return state.posts;
+  },
+  get_post: (state) => (id) => {
+    return state.posts.item.filter((item) => item.guid[0] === id);
   }
 }
 export const mutations = {
   set_posts: (state, payload) => {
     state.posts = payload;
   }
-
 }
 export const actions = {
   async get_posts(context, payload) {
@@ -27,9 +29,9 @@ export const actions = {
           }
           context.commit('set_posts', res.rss.channel[0]);
         })
-      }).catch((error) => {
-      console.log(error);
-    })
-
+      })
+      .catch((error) => {
+        console.log(error);
+      })
   }
 }
