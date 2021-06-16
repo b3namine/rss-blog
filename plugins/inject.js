@@ -1,9 +1,9 @@
 const text = {
   newText: (text) => {
-    return text?.replace('"', '').replace('[', '')
+    return !!text && text.join('');
   }
 }
 
 export default ({app}, inject) => {
-  inject('Text', text)
+  inject('text', text)
 }
