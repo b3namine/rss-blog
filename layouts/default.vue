@@ -32,11 +32,6 @@ export default {
       clipped: false,
       items: [
         {
-          icon: 'mdi-post',
-          title: 'Posts',
-          to: '/posts'
-        },
-        {
           icon: 'mdi-home-variant-outline',
           title: 'Home',
           to: '/'
@@ -44,7 +39,7 @@ export default {
       ]
     }
   },
-  mounted() {
+  created() {
     this.$store.dispatch('posts/get_posts');
   },
   computed: {

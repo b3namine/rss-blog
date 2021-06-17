@@ -84,8 +84,9 @@
         </v-card>
         <div v-if="!!postsFilterByWord && postsFilterByWord.length > 0" class="pagination_container ">
           <v-pagination
-            v-model="currentPage"
+            :value="currentPage"
             :length="totalPages"
+            @input="goToPage"
             circle
           ></v-pagination>
         </div>
@@ -106,7 +107,6 @@ export default {
   data() {
     return {
       isActive: false,
-      currentPage: 1,
       itemsPerPage: 5,
       resultCount: 0,
       date: '',
@@ -115,7 +115,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters({posts: 'posts/get_posts'}),
+    ...mapGetters({posts: 'posts/get_posts', currentPage: 'posts/get_currentPage'}),
     postsFilterByDate() {
       if (!this.posts.item) {
         return;
@@ -135,7 +135,6 @@ export default {
       if (!this.search || this.search.length <= 3) {
         return [...this.postsFilterByDate];
       }
-
       return [...this.postsFilterByDate].filter((post) => this.$text.newText(post.title).split(' ').some((w) => w === this.search));
     },
     totalPages() {
@@ -151,7 +150,7 @@ export default {
       }
       this.resultCount = this.postsFilterByWord.length;
       if (this.currentPage >= this.totalPages) {
-        this.currentPage = this.totalPages;
+        this.$store.dispatch('posts/set_currentPage', this.totalPages)
       }
       const index = this.currentPage * this.itemsPerPage - this.itemsPerPage;
       return this.postsFilterByWord.slice(index, index + this.itemsPerPage);
@@ -163,6 +162,9 @@ export default {
       const month = new Date(date).getMonth() + 1;
       const year = new Date(date).getFullYear();
       return `${day}-${month}-${year}`;
+    },
+    goToPage(id) {
+      this.$store.dispatch('posts/set_currentPage', id);
     }
   }
 }

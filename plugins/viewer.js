@@ -1,3 +1,4 @@
-import VueViewer from 'v-viewer'
 import Vue from 'vue'
-Vue.use(VueViewer)
+import gallery from 'img-vuer'
+
+Vue.use(gallery);

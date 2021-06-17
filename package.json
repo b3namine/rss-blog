@@ -1,5 +1,5 @@
 {
-  "name": "nuxtt",
+  "name": "rss-blog",
   "version": "1.0.0",
   "private": true,
   "scripts": {
@@ -13,8 +13,8 @@
     "@nuxtjs/feed": "^2.0.0",
     "@nuxtjs/proxy": "^2.1.0",
     "core-js": "^3.9.1",
+    "img-vuer": "^0.19.3",
     "nuxt": "^2.15.3",
-    "v-viewer": "^1.6.3",
     "xml2js": "^0.4.23"
   },
   "devDependencies": {
