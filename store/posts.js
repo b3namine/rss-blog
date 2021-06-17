@@ -9,6 +9,12 @@ export const getters = {
     return state.posts;
   },
   get_post: (state) => (id) => {
+    if (state.posts.length === 0) {
+      setTimeout(() => {
+        return state.posts.item.filter((item) => item.guid[0] === id)
+      }, 2000);
+      return;
+    }
     return state.posts.item.filter((item) => item.guid[0] === id);
   }
 }
