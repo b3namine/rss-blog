@@ -9,7 +9,6 @@
       <v-btn v-for="(item, key) in items" :key="key" :to="item.to" exact icon>
         <v-icon>{{ item.icon }}</v-icon>
       </v-btn>
-      <v-spacer/>
     </v-app-bar>
     <v-main>
       <v-container>
@@ -33,14 +32,14 @@ export default {
       clipped: false,
       items: [
         {
-          icon: 'mdi-home-variant-outline',
-          title: 'Home',
-          to: '/'
-        },
-        {
           icon: 'mdi-post',
           title: 'Posts',
           to: '/posts'
+        },
+        {
+          icon: 'mdi-home-variant-outline',
+          title: 'Home',
+          to: '/'
         }
       ]
     }

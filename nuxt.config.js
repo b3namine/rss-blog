@@ -25,7 +25,7 @@ export default {
   css: [],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-  plugins: [{ src: '~/plugins/inject.js', mode: 'client' }],
+  plugins: [{ src: '~/plugins/inject.js', mode: 'client' },{src: '~/plugins/viewer.js'}],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,

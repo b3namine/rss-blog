@@ -3,9 +3,37 @@
 
     <v-col cols="12" class="d-flex flex-row">
       <v-col cols="3">
-        menu
+        <v-menu
+          v-model="menu1"
+          :close-on-content-click="false"
+          :nudge-right="40"
+          transition="scale-transition"
+          offset-y
+          max-width="290px"
+          min-width="auto"
+        >
+          <template v-slot:activator="{ on, attrs }">
+            <v-text-field
+              v-model="date"
+              prepend-icon="mdi-calendar"
+              readonly
+              clearable
+              v-bind="attrs"
+              @click:clear="date = null"
+              v-on="on"
+            ></v-text-field>
+          </template>
+          <v-date-picker
+            v-model="date"
+            no-title
+            @input="menu1 = false"
+          ></v-date-picker>
+        </v-menu>
       </v-col>
       <v-col cols="8" class="d-flex flex-column">
+        <v-card v-if="postsFilter.length === 0">
+          no post found
+        </v-card>
         <v-card v-for="(post,key) in paginate"
                 class="card"
                 :key="key">
@@ -66,36 +94,56 @@ export default {
       isActive: false,
       currentPage: 1,
       itemsPerPage: 5,
-      resultCount: 0
+      resultCount: 0,
+      date: '',
+      menu1: false,
+      search: ''
     }
   },
   computed: {
     ...mapGetters({posts: 'posts/get_posts'}),
-    totalPages: function () {
+    postsFilterByDate() {
+      if (!this.posts.item) {
+        return;
+      }
+      if (!this.date) {
+        return [...this.posts.item]
+          .sort((postCurrent, postNext) => new Date(postNext.pubDate).toTimeString() - new Date(postCurrent.pubDate).toTimeString());
+      }
+      return [...this.posts.item]
+        .sort((postCurrent, postNext) => new Date(postNext.pubDate).toTimeString() - new Date(postCurrent.pubDate).toTimeString())
+        .filter((post) => this.formatDate(post.pubDate) === this.formatDate(this.date));
+    },
+    postsFilterByWord(){
+
+    },
+    totalPages() {
       if (this.resultCount === 0) {
-        return 1
+        return 1;
       } else {
-        return Math.ceil(this.resultCount / this.itemsPerPage)
+        return Math.ceil(this.resultCount / this.itemsPerPage);
       }
     },
-    /* eslint-disable */
-    paginate: function () {
-      if (!this.posts.item || this.posts.item.length !== this.posts.item.length) {
-        return
+    paginate() {
+      if (!this.postsFilterByDate) {
+        return;
       }
-      this.resultCount = this.posts.item.length
+      this.resultCount = this.postsFilterByDate.length;
       if (this.currentPage >= this.totalPages) {
-        this.currentPage = this.totalPages
+        this.currentPage = this.totalPages;
       }
-      const index = this.currentPage * this.itemsPerPage - this.itemsPerPage
-      return this.posts.item.slice(index, index + this.itemsPerPage)
+      const index = this.currentPage * this.itemsPerPage - this.itemsPerPage;
+      return this.postsFilterByDate.slice(index, index + this.itemsPerPage);
     },
   },
   methods: {
-    setPage: function (pageNumber) {
-      this.currentPage = pageNumber
-    },
-  },
+    formatDate(date) {
+      const day = new Date(date).getDate();
+      const month = new Date(date).getMonth() + 1;
+      const year = new Date(date).getFullYear();
+      return `${day}-${month}-${year}`;
+    }
+  }
 }
 </script>
 
